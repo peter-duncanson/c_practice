@@ -30,7 +30,7 @@ int get_next_state(int x, int y);
    neighbors of the cell at (x,y) */
 int num_neighbors(int x, int y);
 
-int main(int argc, char ** argv)
+int main(int argc, char **argv)
 {
 	int n;
 

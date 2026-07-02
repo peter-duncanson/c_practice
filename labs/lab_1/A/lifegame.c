@@ -1,8 +1,7 @@
 /*
  * lifegame.c
- *
- *  Created on:
- *      Author:
+ * Created on: 07/01/26
+ * Author: Peter Duncanson
  */
 
 #include <stdio.h>
@@ -12,22 +11,16 @@
 
 #include "lifegame.h"
 
-/* hard-coded world size */
 #define WORLDWIDTH 39
 #define WORLDHEIGHT 20
 
-/* character representations of cell states */
 #define CHAR_ALIVE '*'
 #define CHAR_DEAD ' '
 
-/* current cell states of the world */
 static int world[WORLDWIDTH][WORLDHEIGHT];
-
-/* next generation cell states */
 static int nextstates[WORLDWIDTH][WORLDHEIGHT];
 
-/* functions to write for Part B of lab */
-void initialize_world_from_file(const char * filename) {
+void initialize_world_from_file(const char *filename) {
 	/* TODO: read the state of the world from a file with
 	   name "filename". Assume file exists, is readable, and
 	   the ith character of the jth line (zero-indexed) describes
@@ -44,11 +37,11 @@ void initialize_world_from_file(const char * filename) {
 
 	   Also need to reset the next generation to DEAD
 	 */
-
+    
 
 }
 
-void save_world_to_file(const char * filename) {
+void save_world_to_file(const char *filename) {
 	/* TODO: write the state of the world into a file with
 	   name "filename". Assume the file can be created, or if
 	   the file exists, overwrite the file. The ith character
@@ -67,7 +60,7 @@ void save_world_to_file(const char * filename) {
 
 /* initializes the world to a hard-coded pattern, and resets
    all the cells in the next generation to DEAD */
-void initialize_world(void) {
+void initialize_world() {
 	int i, j;
 
 	for (i = 0; i < WORLDWIDTH; i++)
@@ -81,11 +74,11 @@ void initialize_world(void) {
 	world[2][3] = ALIVE;
 }
 
-int get_world_width(void) {
+int get_world_width() {
 	return WORLDWIDTH;
 }
 
-int get_world_height(void) {
+int get_world_height() {
 	return WORLDHEIGHT;
 }
 
@@ -103,7 +96,7 @@ void set_cell_state(int x, int y, int state) {
 	nextstates[x][y] = state;
 }
 
-void finalize_evolution(void) {
+void finalize_evolution() {
 	int x, y;
 	for (x = 0; x < WORLDWIDTH; x++) {
 		for (y = 0; y < WORLDHEIGHT; y++) {
@@ -113,7 +106,7 @@ void finalize_evolution(void) {
 	}
 }
 
-void output_world(void) {
+void output_world() {
 	char worldstr[2*WORLDWIDTH+2];
 	int i, j;
 
