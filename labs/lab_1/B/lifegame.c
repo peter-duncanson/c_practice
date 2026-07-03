@@ -16,49 +16,69 @@
 
 #define CHAR_ALIVE '*'
 #define CHAR_DEAD ' '
+#define NEWLINE '\n'
 
 static int world[WORLDWIDTH][WORLDHEIGHT];
 static int nextstates[WORLDWIDTH][WORLDHEIGHT];
 
 void initialize_world_from_file(const char *filename) {
-	/* TODO: read the state of the world from a file with
-	   name "filename". Assume file exists, is readable, and
-	   the ith character of the jth line (zero-indexed) describes
-	   world[i][j] according to the characters CHAR_ALIVE and
-	   CHAR_DEAD
+    FILE *world_file = fopen(filename, "r");
+    char src_input;
 
-	   Assume a line does not contain more than 256 characters
-	   (including newline). If a line doesn't contain WORLDWIDTH
-	   characters, remaining cells in line are presumed DEAD.
-	   Similarly, if the file does not contain WORLDHEIGHT lines,
-	   remaining lines are presumed dead.
+	for (int i = 0; i < WORLDWIDTH; i++)
+		for (int j = 0; j < WORLDHEIGHT; j++)
+			world[i][j] = nextstates[i][j] = DEAD;
 
-	   On error, print some useful error message and call abort().
+    int i, j = 0;
 
-	   Also need to reset the next generation to DEAD
-	 */
-    FILE *world_wrd = 
+    while (fscanf(world_file, "%c", &src_input) != EOF) {
+        switch (src_input) {
+            case CHAR_DEAD:
+                j++;
+                break;
+            case CHAR_ALIVE:
+                world[j][i] = ALIVE;
+                j++;
+                break;
+            case NEWLINE:
+                i++;
+                j = 0;
+                break;
+        }
+    }
+    fclose(world_file);
+    output_world();
+
 }
 
 void save_world_to_file(const char *filename) {
-	/* TODO: write the state of the world into a file with
-	   name "filename". Assume the file can be created, or if
-	   the file exists, overwrite the file. The ith character
-	   of the jth line (zero-indexed) describes world[i][j]
-	   using the characters CHAR_ALIVE and CHAR_DEAD
+    FILE *save_file = fopen(filename, "w");
 
-	   This file should be readable using the function
-	   initialize_world_from_file(filename) above; we can use
-	   it to resume a game later
-	 */
+	char worldstr[2*WORLDWIDTH+2];
+	int i, j;
 
+	worldstr[2*WORLDWIDTH+1] = '\0';
+	worldstr[0] = '+';
+	for (i = 1; i < 2*WORLDWIDTH; i++)
+		worldstr[i] = '-';
+	worldstr[2*WORLDWIDTH] = '+';
+    fprintf(save_file, "%s\n", worldstr);
+	for (i = 0; i <= 2*WORLDWIDTH; i+=2)
+		worldstr[i] = '|';
+	for (i = 0; i < WORLDHEIGHT; i++) {
+		for (j = 0; j < WORLDWIDTH; j++)
+			worldstr[2*j+1] = world[j][i] == ALIVE ? CHAR_ALIVE : CHAR_DEAD;
+        fprintf(save_file, "%s\n", worldstr);
+	}
+	worldstr[0] = '+';
+	for (i = 1; i < 2*WORLDWIDTH; i++)
+		worldstr[i] = '-';
+	worldstr[2*WORLDWIDTH] = '+';
+	fprintf(save_file, "%s\n", worldstr);
 
+    fclose(save_file);
 }
 
-/* you shouldn't need to edit anything below this line */
-
-/* initializes the world to a hard-coded pattern, and resets
-   all the cells in the next generation to DEAD */
 void initialize_world() {
 	int i, j;
 
