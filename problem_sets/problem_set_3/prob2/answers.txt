@@ -1,0 +1,23 @@
+(a) 
+In implementing this program, you want to accesss the global
+variable the_dictionary from main.c as well as from dict.c.
+However, due to the header file's inclusion in both source
+documents, the variable gets declared in both places, creating
+an ambiguity. How would you resolve this ambiguity?
+
+I would not declare the_dictionary in dict.h, instead declaring
+it in dict.c and creating helper function in dict.h and dict.c 
+that return items from it for use in main.c
+
+(b)
+Now, suppose you want to restrict the dictionary data structre
+to be accessible only from functions in dict.c. Is it still
+possible to directly access or modify the variable from main.c,
+even without the declatation in dict.h? If so, how would you
+ensure the data structure remains private?
+
+No, if it is not declared in the header file then it should not
+be accessible in main.c
+
+(c)
+

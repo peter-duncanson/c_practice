@@ -34,8 +34,8 @@ int main(int argc, char **argv) {
 void next_generation() {
     int height = get_world_height();
     int width = get_world_width();
-    for (int row=0; row<height; row++) {
-        for (int col=0; col<width; col++) {
+    for (int row = 0; row < height; row++) {
+        for (int col = 0; col < width; col++) {
             set_cell_state(col, row, get_next_state(col, row));
         }
     }

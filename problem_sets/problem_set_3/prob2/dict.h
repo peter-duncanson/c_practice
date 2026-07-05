@@ -1,6 +1,6 @@
 // data structure for the dictionary
-char *dict[1000];
+char *the_dictionary[1000];
 
 // declarations
-void load_dict(void);
-char *lookup(char []);
+void load_dictionary();
+char *lookup(char[]);

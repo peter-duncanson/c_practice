@@ -1,13 +1,7 @@
 #include "dict.h"
 
-
-// data structure for the dictionary
-char *dict[1000];
-
-void load_dict(void) {
-    // something
+void load_dictionary() {
 }
 
-char *lookup(char []) {
-    // else
+char *lookup(char[]) {
 }
