@@ -9,6 +9,8 @@ int main(void) {
     // repeated_digit_display();
     // repeated_digit_table();
     // repeated_digits_loop();
+    // reverse_improved();
+    monthly_interest();
 
     return 0;
 }

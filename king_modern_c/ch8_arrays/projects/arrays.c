@@ -123,4 +123,42 @@ void repeated_digits_loop(void) {
 // (4) Modify the <reverse.c> program of Section 8.1 and use the expression
 // (int) (sizeof(a) / sizeof(a[0])) (or a macro with this value) for the array
 // length.
+void reverse_improved(void) {
+     
+    // previously, a macro called N was used to hold an integer constant for
+    // the size of the array and was also used in the for loop. I see how this
+    // could be useful if there was some way to pass in an arbitrary array as
+    // a kind of argument, or parameter as was mentioned. Otherwise, it seems
+    // to be excessive when a macro defining an integer constant could also be 
+    // used to instantiate an array and reference its size.
+
+    #define SIZE (int) (sizeof(a) / sizeof(a[0]))
+
+    int i, a[10];
+
+    printf("Enter %d numbers: ", SIZE);
+    for (i = 0; i < SIZE; i++) {
+        scanf("%d", &a[i]);
+    }
+
+    printf("In reverse order:");
+    for (i = SIZE - 1; i >= 0; i--) {
+        printf(" %d", a[i]);
+    }
+    puts("");
+}
+//==============================================================================
+
+//==============================================================================
+// (5) Modify the <interest.c> program of Section 8.1 so that it compounds
+// interest *monthly* instead of *annually*. The form of the output shouldn't
+// change; the balance should still be shown at annual intervals.
+void monthly_interest(void) {
+    // Formula for interest compounded monthly:
+    // amount = initial*(1+(rate/n))^(n*t)
+    // where:
+    // rate = interest rate
+    // n = number of times compounded per year
+    // t = number of years
+}
 //==============================================================================
