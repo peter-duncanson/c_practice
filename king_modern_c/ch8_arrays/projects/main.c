@@ -10,7 +10,11 @@ int main(void) {
     // repeated_digit_table();
     // repeated_digits_loop();
     // reverse_improved();
-    monthly_interest();
+    // monthly_interest();
+    // leet_speek();
+    // marginals();
+    // quiz_data();
+    random_walk();
 
     return 0;
 }
