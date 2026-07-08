@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <time.h>
 
 //==============================================================================
@@ -519,10 +520,345 @@ void random_walk(void) {
 // entered by the user.
 void find_flight(void) {
 
-    int depatures[8] = { 480, 583, 679, 767, 840, 945, 1140, 1305 };
+    #define N_TIMES (sizeof(departures) / sizeof(departures[0]))
+
+    // times stored as minutes since midnight
+    int departures[8] = { 480, 583, 679, 767, 840, 945, 1140, 1305 };
     int arrivals[8] = { 616, 712, 811, 900, 968, 1075, 1280, 1438 };
     
-    char buffer[];
+
+    int i, hours, minutes, time_gap, closest;
+
+    printf("Enter a 24 hour time: ");
+    scanf("%d:%d", &hours, &minutes);
+
+    minutes += (hours * 60);
+
+    for (i = 0; i < N_TIMES; i++) {
+        time_gap = departures[i] - minutes;
+
+        // check if flight was in the past and if so continue
+        if (time_gap <= 0) {
+            continue;
+        }
+        // if its not in the past, the first one we enounter should be closest
+        else {
+            closest = i;
+            break;
+        }
+    }
+
+    hours = departures[closest] / 60;
+    minutes = departures[closest] % 60;
+
+    printf("Closest departure time is ");
+
+    switch (departures[closest] >= 720) {
+        case 0:
+            printf("%.2d:%.2d a.m., ", hours, minutes);
+            break;
+        case 1:
+            printf("%.2d:%.2d p.m., ", hours - 12, minutes);
+            break;
+    };
+
+    hours = arrivals[closest] / 60;
+    minutes = arrivals[closest] % 60;
+
+    printf("Arriving at ");
+    switch (arrivals[closest] >= 720) {
+        case 0:
+            printf("%.2d:%.2d a.m., ", hours, minutes);
+            break;
+        case 1:
+            printf("%.2d:%.2d p.m., ", hours - 12, minutes);
+            break;
+    };
+
+    puts("");
+
+}
+//==============================================================================
+
+//==============================================================================
+// (11) Modify Programming Project 4 from Chapter 7 so that the program labels
+// its output:
+// Enter phone number: 1-800-COL-LECT
+// In numeric form: 1-800-265-5328
+// The program will need to store the phone number (either in its original form
+// or in its numeric form) in an array of characters until it can be printed.
+// You may assume that the phone number is no more than 15 characters long.
+// From Chapter 7 ->
+// Write a program that translates an alphabetic phone number into numeric form:
+// Enter phone number: CALLATT
+// 2255288
+// Mapping:
+// 2 = ABC
+// 3 = DEF
+// 4 = GHI
+// 5 = JKL
+// 6 = MNO
+// 7 = PRS
+// 8 = TUV
+// 9 = WXY
+void convert_phone_number(void) {
+
+    char c, phone_number[16];
+    int i;
+
+    printf("Enter phone number: ");
+
+    while((c = getchar()) != '\n') {
+        phone_number[i] = c;
+        i++;
+    }
+    phone_number[16] = '\0';
+
+    printf("In numeric form: ");
+
+    for (i = 0; i < 15; i++) {
+        c = phone_number[i];
+        if (c == '\0') {
+            break;
+        }
+        else {
+            if ('A' <= c && 'C' >= c) {
+                printf("2");
+                continue;
+            }
+            if ('D' <= c && 'F' >= c) {
+                printf("3");
+                continue;
+            }
+            if ('G' <= c && 'I' >= c) {
+                printf("4");
+                continue;
+            }
+            if ('J' <= c && 'L' >= c) {
+                printf("5");
+                continue;
+            }
+            if ('M' <= c && 'O' >= c) {
+                printf("6");
+                continue;
+            }
+            if ('P' <= c && 'S' >= c && c != 'Q') {
+                printf("7");
+                continue;
+            }
+            if ('T' <= c && 'V' >= c) {
+                printf("8");
+                continue;
+            }
+            if ('W' <= c && 'Y' >= c) {
+                printf("9");
+                continue;
+            }
+            printf("%c", c);
+        }
+    }
+    puts("");
+
+}
+//==============================================================================
+
+//==============================================================================
+// (12) Modify Programming Project 5 from Chapter 7 so that the SCRABBLE values
+// of the letters are stored in an array. The array will have 25 elements,
+// corresponding to the 25 letters of the alphabet.
+// For example, element 0 of the array will store 1 (because the SCRABBLE value
+// of the letter A is 1), element 1 of the array will store 3 (because the
+// SCRABBLE value of the letter B is 3), and so forth. As each character in the
+// input word is read, the program will use the array to determine the SCRABBLE
+// value of the character. Use an array initializer to set up the array.
+// From Chapter 7 ->
+// In the SCRABBLE Crossword Game, players form words using small tiles, each
+// containing a letter and a face value. The face value varies from one letter
+// to another, based on the letter's rarity.
+// ----------------------
+//     Face values:     |
+// - AEILNORSTU -> 1    |
+// - DG         -> 2    |
+// - BCMP       -> 3    |
+// - FHVWY      -> 4    |
+// - K          -> 5    |
+// - JX         -> 8    |
+// - QZ         -> 10   |
+// ----------------------
+//
+// #include <ctype.h>
+// int toupper(int c) -> C if c else C
+//
+void scrabble_score(void) {
+    
+    int face_values[26] = { 
+                            1, 3, 3, 2, 1, // A B C D E
+                            4, 2, 4, 1, 8, // F G H I J
+                            5, 1, 3, 1, 1, // K L M N O
+                            3, 10,1, 1, 1, // P Q R S T
+                            1, 4, 4, 8, 4, // U V W X Y
+                            10             // Z
+    };
+
+    int c, score;
+    
+    printf("Enter word: ");
+    while ((c = getchar()) != '\n') {
+
+        score += face_values[toupper(c) - 65];
+    }
+
+    printf("Score: %d\n", score);
+
+}
+//==============================================================================
+
+//==============================================================================
+// (13) Modify Programming Project 11 from Chapter 7 so that the program labels
+// its output:
+// Enter a first and last name: Lloyd Fosdick
+// You entered the name: Fosdick, L.
+// The program will store the last name (but not the first name) in an array of
+// characters until it can be printed. You may assume that the array is no more
+// than 20 characters long.
+void format_name(void) {
+
+    char c, first_initial, last_name[20];
+    int i, end;
+
+    printf("Enter a first and last name: ");
+
+    first_initial = getchar();
+    while((c = getchar()) != ' ');
+    while((c = getchar()) != '\n') {
+        last_name[i] = c;
+        i++;
+    }
+    end = i;
+
+    printf("You entered the name: ");
+    for (int i = 0; i <= end; i++) {
+        printf("%c", last_name[i]);
+    }
+    printf(", %c.\n", first_initial);
+
+}
+//==============================================================================
+
+//==============================================================================
+// (14) Write a program that reverses the words in a sentence:
+// Enter a sentence: you can cage a swallow can't you?
+// Reversal of sentence: you can't swallow a cage can you?
+void reverse_sentence(void) {
+    
+    char c, punctuation, buffer[80];
+    int end, word_end, i, j = 0;
+
+    printf("Enter a sentence: ");
+    while ((c = getchar()) != '\n') {
+        if (c == '!' || c == '?' || c == '.') {
+            punctuation = c;
+            continue;
+        }
+        buffer[i] = c;
+        i++;
+    }
+    end = word_end = i;
+
+    for (i = end; i >= 0; i--) {
+        if (buffer[i] == ' ') {
+            for (j = i + 1; j < word_end; j++) {
+                printf("%c", buffer[j]);
+            }
+            printf(" ");
+            word_end = i;
+            continue;
+        }
+        if (i == 0) {
+            for (j = i; j <= word_end - 1; j++) {
+                printf("%c", buffer[j]);
+            }
+        }
+    }
+    if (punctuation) {
+        printf("%c", punctuation);
+    }
+
+    puts("");
+
+}
+//==============================================================================
+
+//==============================================================================
+// (15) One of the oldest known encryption techniques is the Caesar cipher,
+// attributed to Julius Caesar. It involves replacing each letter in a message
+// with another letter that is a fixed number of positions later in the
+// alphabet. (If the replacement would go past the letter Z, the cipher
+// wraps around to the beginning of the alphabet.) Write a program that encrypts
+// a message using a Caesar cipher. The user will enter the message to be
+// encrypted and the shift amount.
+// -----------------------------------------------------------------------------
+// Enter message to be encrypted: Go ahead, make my day.
+// Enter shift amount: 3
+// Encrypted message: Jr dkhdg, pdnh pb gdb.
+// -----------------------------------------------------------------------------
+// Notice that the program can decrypt a message if ther user enters 26 minus
+// the original key:
+// -----------------------------------------------------------------------------
+// Enter message to be encrypted: Jr dkhdg, pdnh pb gdb. 
+// Enter shift amount: 23
+// Encrypted message: Go ahead, make my day.
+// -----------------------------------------------------------------------------
+// You may assume that the message does not exceed 80 characters. Characters
+// other than letters should be left unchanged. Upper and lower case should
+// remain that way when encrypted.
+void caesar_cipher(void) {
+
+    char c, message[80];
+    int shift_amount, message_length, i = 0;
+
+    printf("Enter message to be encrypted: ");
+    while ((c = getchar()) != '\n') {
+        message[i] = c;
+        i++;
+    }
+    message_length = i;
+    printf("Enter shift amount: ");
+    scanf("%d", &shift_amount);
+    // Shift amount up to the max value of an int32 still works
+    shift_amount = shift_amount % 25;
+    
+    for (i = 0; i <= message_length; i++) {
+         c = message[i];
+         if ('a' <= c && 'z' >= c) {
+             printf("%c", ((c - 'a') + shift_amount) % 26 + 'a');
+             continue;
+         }
+         if ('A' <= c && 'Z' >= c) {
+             printf("%c", ((c - 'A') + shift_amount) % 26 + 'A');
+             continue;
+         }
+         else {
+             printf("%c", c);
+         }
+    }
+    puts("");
+}
+//==============================================================================
+
+//==============================================================================
+// (16) Write a program that tests whether two words are anagrams (permutations
+// ot the same letters):
+// -----------------------------------------------------------------------------
+// Enter first word: smartest
+// Enter second word: mattress
+// The words are anagrams.
+// -----------------------------------------------------------------------------
+// Enter first word: dumbest
+// Enter second word: stumble
+// The words are not anagrams.
+// -----------------------------------------------------------------------------
+void is_anagram(void) {
 
 }
 //==============================================================================
