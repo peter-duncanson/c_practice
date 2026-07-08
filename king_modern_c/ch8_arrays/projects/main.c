@@ -15,7 +15,13 @@ int main(void) {
     // marginals();
     // quiz_data();
     // random_walk();
-    find_flight();
+    // find_flight();
+    // convert_phone_number();
+    // scrabble_score();
+    // format_name();
+    // reverse_sentence();
+    // caesar_cipher();
+    is_anagram();
 
     return 0;
 }
