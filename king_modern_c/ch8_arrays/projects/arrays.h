@@ -8,3 +8,9 @@ void marginals(void);              // 7
 void quiz_data(void);              // 8
 void random_walk(void);            // 9
 void find_flight(void);            // 10
+void convert_phone_number(void);   // 11
+void scrabble_score(void);         // 12
+void format_name(void);            // 13
+void reverse_sentence(void);       // 14
+void caesar_cipher(void);          // 15
+void is_anagram(void);             // 16
