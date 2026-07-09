@@ -909,11 +909,6 @@ void magic_square(void) {
     scanf("%d", &n);
     
     int a[n][n];
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            a[i][j] = 0;
-        }
-    }
 
     i = 0;
     j = n / 2;
@@ -921,7 +916,6 @@ void magic_square(void) {
     for (k = 1; k <= (n * n); k++) {
 
         a[i][j] = k;
-
         i--;
         j++;
 
@@ -943,6 +937,5 @@ void magic_square(void) {
         }
         puts("");
     }
-
 }
 //==============================================================================
