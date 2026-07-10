@@ -507,7 +507,7 @@ int fact_no_recursion(int n)
 int gcd_recursive(int a, int b)
 {
     if (!a) return b;
-    else return gcd_recursive(b % a, a);
+    return gcd_recursive(b % a, a);
 }
 
 // =============================================================================
