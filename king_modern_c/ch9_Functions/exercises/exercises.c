@@ -530,6 +530,7 @@ void pb(int n)
 //
 // The function repeatedly calls itself when the input is nonzero, building a 
 // call stack of n / 2, so if input was 15:
+// pb(15)
 // pb(7)
 // pb(3)
 // pb(1)
