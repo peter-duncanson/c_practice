@@ -4,6 +4,9 @@
 // 06/09/26
 // =============================================================================
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
 #include <ctype.h>
 #include "exercises.h"
 // =============================================================================
@@ -330,6 +333,49 @@ double inner_product(double a[], double b[], int n)
 // The function will return the difference between the value of the White pieces
 // and Black pieces. This value will be positive if White has the advantage in
 // material and negative is Black does.
+
+int evaluate_position(char board[8][8])
+{
+    int i, j, score_black = 0, score_white = 0;
+
+    for (i = 0; i < 8; i++)
+        for (j = 0; j < 8; j++)
+        {
+
+            switch(board[i][j])
+            {
+                case 'P':
+                    score_white += 1;
+                    break;
+                case 'p':
+                    score_black += 1;
+                    break;
+                case 'N':
+                case 'B':
+                    score_white += 3;
+                    break;
+                case 'n':
+                case 'b':
+                    score_black += 3;
+                    break;
+                case 'R':
+                    score_white += 5;
+                    break;
+                case 'r':
+                    score_black += 5;
+                    break;
+                case 'Q':
+                    score_white += 9;
+                    break;
+                case 'q':
+                    score_black += 9;
+                    break;
+
+            };
+        }
+    return score_white - score_black;
+}
+
 // =============================================================================
 
 // =============================================================================
@@ -344,8 +390,22 @@ double inner_product(double a[], double b[], int n)
 //      for (i = 0; i < n; i++)
 //          if (a[i] == 0)
 //              return true;
-//          else
+//          else             <- function returns false prematurely    
 //              return false;
+// }
+//
+// The function will return false as soon as it encounters the first nonzero
+// element. The array could be something like { 1, 0, 0, 0, 0 } and the function
+// would return false. The correct function would be:
+//
+// bool has_zero(int a[], int n)
+// {
+//      int i;
+//
+//      for (i = 0; i < n; i++)
+//          if (a[i] == 0) return true;
+//
+//      return false;
 // }
 //
 // =============================================================================
@@ -363,7 +423,26 @@ double inner_product(double a[], double b[], int n)
 //      if (x <= z) return x;
 //      rerutn z;
 // }
-//
+
+double median(double x, double y, double z)
+{
+    double ans;
+    
+    if (x <= y)
+    {
+        if (y <= z) ans = y;
+        else ans = (x <= z) ? z : x;
+    }
+
+    else if (y <= x) 
+    {
+        if (x <= z) ans = x;
+        else ans = (y <= z) ? z : y;
+    }
+    
+    return ans;
+}
+
 // =============================================================================
 
 // =============================================================================
@@ -376,30 +455,90 @@ double inner_product(double a[], double b[], int n)
 //      else
 //          return n * fact(n - 1);
 // }
-//
+
+int fact(int n)
+{
+    return (n <= 1) ? 1 : n * fact(n - 1);
+}
+
 // =============================================================================
 
 // =============================================================================
 // (17) Rewrite the fact function so that it's no longer recursive.
+
+int fact_no_recursion(int n)
+{
+    int i, k = 1;    
+    
+    for (i = n; i > 1; i--)
+    {
+        k *= i;
+    }
+
+    return k;
+}
+
 // =============================================================================
 
 // =============================================================================
 // (18) Write a recursive version of the gcd function.
+
+// int gcd(int a, int b)
+// {
+//      int temp;
+//
+//      if (a < b)
+//      {
+//          temp = a;
+//          a = b;
+//          b = temp;
+//      }
+//
+//      while (a)
+//      {
+//          temp = a;
+//          a = b % a;
+//          b = temp;
+//      }
+//
+//      return n;
+// }
+
+int gcd_recursive(int a, int b)
+{
+    if (!a) return b;
+    else return gcd_recursive(b % a, a);
+}
+
 // =============================================================================
 
 // =============================================================================
 // (19) Consider the following "mystery" function:
-//
-// void pb(int n)
-// {
-//      if (n != 0)
-//      {
-//          pb(n / 2);
-//          putchar('0' + n % 2);
-//      }
-// }
-//
+
+void pb(int n)
+{
+     if (n != 0)
+     {
+         pb(n / 2);
+         putchar('0' + n % 2);
+     }
+}
+
 // Trace the execution of the function by hand, then write a program that calls
 // the function, passing a number entered by the user. What does the function
 // do?
+//
+// The function repeatedly calls itself when the input is nonzero, building a 
+// call stack of n / 2, so if input was 15:
+// pb(7)
+// pb(3)
+// pb(1)
+// pb(0) <- now unwind
+// '0' + 1
+// '0' + 1
+// '0' + 1
+// '0' + 1
+// output:
+// 1111
+// It prints the number in binary!!
 // =============================================================================
