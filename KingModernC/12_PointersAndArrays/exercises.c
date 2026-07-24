@@ -271,19 +271,7 @@
 // ident for use as an identity matrix. Rewrite the code, using a single pointer to step through
 // the array one element at a time. Hint: the first element of the array should be 1...
 //
-// From section 8.2 ->
-//
 // #define N 10
-//
-// double ident[N][N];
-// int row, col;
-//
-// for (row = 0; row < N; row++)
-//     for (col - 0; col < N; col++)
-//         if (row == col)
-//             ident[row][col] = 1.0;
-//         else
-//             ident[row][col] = 0.0;
 //
 // double id_matrix[N][N];
 // int i = 0;
@@ -309,6 +297,7 @@
 // int temperatures[7][24];
 // Write a statement that uses the search function from exercise 7 to search the entire
 // temperatures array for the value 32.
+<<<<<<< HEAD
 // 
 // void print_array_twod(int *a, int rows, int cols)
 // {
@@ -349,6 +338,13 @@
 // {
 //     puts("false");
 // }
+=======
+//
+// for (int i = 0; i < 7; i++)
+//     if (search(temeratures, 24, 32)) 
+//         printf("Found\n");
+//
+>>>>>>> ec3bd4e18a7c853e614d83e49368a5ec39e4edb5
 // ================================================================================================
 
 // ================================================================================================
